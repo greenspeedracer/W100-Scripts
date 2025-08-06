@@ -1,6 +1,8 @@
+DecodePMTSDReq_FD: Decode the request from the W100 for a PMTSD command to be sent from the coordinator to the W100.
+
 DecodePMTSD_FD: Decode the PMTSD commands sent from the W100 to the coordinator.
 
-DecodePMTSD_TD: Decode the PMSSD commands sent from the coordinator to the W100.
+DecodePMTSD_TD: Decode the PMTSD commands sent from the coordinator to the W100.
 
 GenerateHVACOff_TD: Generate the command to disable HVAC mode on the W100.
 
