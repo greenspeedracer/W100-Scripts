@@ -10,6 +10,12 @@ GenerateHVACOn_TD: Generate the command to enable HVAC mode on the W100.
 
 GeneratePMTSD_TD: Generate the command to update the PMTSD values on the W100.
 
+In the context of what may be hardcoded into these very crappy scripts, the IEEE addresses are as follows:
+    W100 (TH-S04D): 54:EF:44:10:01:2D:D6:31
+    Coordinator/Hub: 54:EF:44:80:71:1A
+
+I have not seen any issue with reusing the IEEE address above. It was the IEEE of the Aqara hub I did testing with. Using that IEEE to send commands from my SLZB worked just fine. YMMV.
+
 P: Power
     P=0 (Thermostat On)
     P=1 (Thermostat Off)
