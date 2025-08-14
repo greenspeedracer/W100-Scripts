@@ -1,0 +1,26 @@
+alias: Thermostat Update
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - climate.living_room_ac
+    attribute: temperature
+  - trigger: state
+    entity_id:
+      - climate.living_room_ac
+    attribute: hvac_action
+  - trigger: state
+    entity_id:
+      - climate.living_room_ac
+conditions: []
+actions:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 500
+  - action: script.ce_to_pmtsd
+    data: {}
+  - action: script.pmstd_to_w100
+    data: {}
+mode: queued

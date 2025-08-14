@@ -1,0 +1,44 @@
+alias: CE to PMTSD
+description: ""
+sequence:
+  - variables:
+      climate_state: "{{ states('climate.living_room_ac') }}"
+      climate_attrs: "{{ state_attr('climate.living_room_ac', 'friendly_name') }}"
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {% set mode = states('climate.living_room_ac') %}  {% if mode == 'off'
+        %}1{% elif mode == 'cool' %}0{% else %}1{% endif %}
+    target:
+      entity_id: input_number.p
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {% set action = state_attr('climate.living_room_ac', 'hvac_action') %}
+        {% if action == 'idle' %}1{% elif action == 'cooling' %}0{% else %}2{%
+        endif %}
+    target:
+      entity_id: input_number.m
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {{ ((state_attr('climate.living_room_ac', 'temperature') | float - 32) *
+        5 / 9) | round(0) }}
+    target:
+      entity_id: input_number.t
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "0"
+    target:
+      entity_id: input_number.s
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "1"
+    target:
+      entity_id: input_number.d
+mode: queued

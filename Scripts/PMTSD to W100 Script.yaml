@@ -1,0 +1,17 @@
+sequence:
+  - action: mqtt.publish
+    metadata: {}
+    data:
+      topic: zigbee2mqtt/Living Room Thermostat/set
+      payload: |-
+        {
+          "PMTSD_to_W100": {
+            "P": {{ states('input_number.p') | int }},
+            "M": {{ states('input_number.m') | int }},
+            "T": {{ states('input_number.t') | int }},
+            "S": {{ states('input_number.s') | int }},
+            "D": {{ states('input_number.d') | int }}
+            }
+        }
+alias: PMSTD to W100
+description: ""

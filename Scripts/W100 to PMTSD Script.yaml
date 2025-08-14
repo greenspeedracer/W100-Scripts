@@ -1,0 +1,59 @@
+sequence:
+  - variables:
+      data_string: "{{ states('sensor.living_room_thermostat_pmtsd_from_w100_data') }}"
+      parts: "{{ data_string.split('_')[1:] }}"
+  - repeat:
+      for_each: "{{ parts }}"
+      sequence:
+        - variables:
+            key: "{{ repeat.item[0:2] }}"
+            val: "{{ repeat.item[2:] | float }}"
+        - choose:
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'PW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.p
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'MW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.m
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'TW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.t
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'SW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.s
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'DW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.d
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+alias: W100 to PMTSD
+mode: single
+description: ""

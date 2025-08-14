@@ -1,0 +1,18 @@
+alias: W100 PMSTD Request
+description: ""
+triggers:
+  - trigger: mqtt
+    topic: zigbee2mqtt/Living Room Thermostat/action
+    payload: W100_PMTSD_request
+conditions: []
+actions:
+  - action: script.ce_to_pmtsd
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 500
+  - action: script.pmstd_to_w100
+    data: {}
+mode: single

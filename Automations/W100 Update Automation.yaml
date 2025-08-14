@@ -1,0 +1,24 @@
+alias: W100 Update
+triggers:
+  - entity_id:
+      - sensor.living_room_thermostat_pmtsd_from_w100_data
+    trigger: state
+conditions:
+  - condition: template
+    value_template: >
+      {% set bad = ['unknown', 'unavailable', 'none', ''] %} {{
+      trigger.to_state.state not in bad and trigger.to_state.state !=
+      trigger.from_state.state and not (trigger.from_state.state in bad and
+      trigger.to_state.state not in bad) }}
+actions:
+  - action: script.w100_to_pmtsd
+    data: {}
+  - action: script.pmtsd_to_ce
+    data: {}
+  - delay:
+      milliseconds: 500
+  - action: script.ce_to_pmtsd
+    data: {}
+  - action: script.pmstd_to_w100
+    data: {}
+mode: single

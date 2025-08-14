@@ -1,0 +1,51 @@
+# pmtsd_helpers.yaml
+
+p:
+  name: P
+  icon: mdi:power
+  initial: 0
+  min: 0
+  max: 1
+  step: 1
+  mode: box
+  unit_of_measurement: ""
+
+m:
+  name: M
+  icon: mdi:auto-mode
+  initial: 0
+  min: 0
+  max: 2
+  step: 1
+  mode: box
+  unit_of_measurement: ""
+
+t:
+  name: T
+  icon: mdi:temperature-celsius
+  initial: 20
+  min: 5
+  max: 35
+  step: 1
+  mode: box
+  unit_of_measurement: "°C"
+
+s:
+  name: S
+  icon: mdi:fan
+  initial: 0
+  min: 0
+  max: 3
+  step: 1
+  mode: box
+  unit_of_measurement: ""
+
+d:
+  name: D
+  icon: mdi:crosshairs-question
+  initial: 0
+  min: 0
+  max: 1
+  step: 1
+  mode: box
+  unit_of_measurement: ""

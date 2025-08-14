@@ -1,0 +1,174 @@
+# w100_scripts.yaml
+
+-id: ce_to_pmtsd
+alias: CE to PMTSD
+description: ""
+sequence:
+  - variables:
+      climate_state: "{{ states('climate.living_room_ac') }}"
+      climate_attrs: "{{ state_attr('climate.living_room_ac', 'friendly_name') }}"
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {% set mode = states('climate.living_room_ac') %}  {% if mode == 'off'
+        %}1{% elif mode == 'cool' %}0{% else %}1{% endif %}
+    target:
+      entity_id: input_number.p
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {% set action = state_attr('climate.living_room_ac', 'hvac_action') %}
+        {% if action == 'idle' %}1{% elif action == 'cooling' %}0{% else %}2{%
+        endif %}
+    target:
+      entity_id: input_number.m
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {{ ((state_attr('climate.living_room_ac', 'temperature') | float - 32) *
+        5 / 9) | round(0) }}
+    target:
+      entity_id: input_number.t
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "0"
+    target:
+      entity_id: input_number.s
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "1"
+    target:
+      entity_id: input_number.d
+mode: queued
+
+-id: pmtsd_to_ce
+alias: CE to PMTSD
+description: ""
+sequence:
+  - variables:
+      climate_state: "{{ states('climate.living_room_ac') }}"
+      climate_attrs: "{{ state_attr('climate.living_room_ac', 'friendly_name') }}"
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {% set mode = states('climate.living_room_ac') %}  {% if mode == 'off'
+        %}1{% elif mode == 'cool' %}0{% else %}1{% endif %}
+    target:
+      entity_id: input_number.p
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {% set action = state_attr('climate.living_room_ac', 'hvac_action') %}
+        {% if action == 'idle' %}1{% elif action == 'cooling' %}0{% else %}2{%
+        endif %}
+    target:
+      entity_id: input_number.m
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: >-
+        {{ ((state_attr('climate.living_room_ac', 'temperature') | float - 32) *
+        5 / 9) | round(0) }}
+    target:
+      entity_id: input_number.t
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "0"
+    target:
+      entity_id: input_number.s
+  - action: input_number.set_value
+    metadata: {}
+    data:
+      value: "1"
+    target:
+      entity_id: input_number.d
+mode: queued
+
+-id: pmtsd_to_w100
+sequence:
+  - action: mqtt.publish
+    metadata: {}
+    data:
+      topic: zigbee2mqtt/Living Room Thermostat/set
+      payload: |-
+        {
+          "PMTSD_to_W100": {
+            "P": {{ states('input_number.p') | int }},
+            "M": {{ states('input_number.m') | int }},
+            "T": {{ states('input_number.t') | int }},
+            "S": {{ states('input_number.s') | int }},
+            "D": {{ states('input_number.d') | int }}
+            }
+        }
+alias: PMSTD to W100
+description: ""
+
+-id: w100_to_pmtsd
+sequence:
+  - variables:
+      data_string: "{{ states('sensor.living_room_thermostat_pmtsd_from_w100_data') }}"
+      parts: "{{ data_string.split('_')[1:] }}"
+  - repeat:
+      for_each: "{{ parts }}"
+      sequence:
+        - variables:
+            key: "{{ repeat.item[0:2] }}"
+            val: "{{ repeat.item[2:] | float }}"
+        - choose:
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'PW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.p
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'MW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.m
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'TW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.t
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'SW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.s
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+            - conditions:
+                - condition: template
+                  value_template: "{{ key == 'DW' }}"
+              sequence:
+                - target:
+                    entity_id: input_number.d
+                  data:
+                    value: "{{ val }}"
+                  action: input_number.set_value
+alias: W100 to PMTSD
+mode: single
+description: ""
+

@@ -1,0 +1,26 @@
+alias: PMTSD to CE
+sequence:
+  - target:
+      entity_id: climate.living_room_ac
+    data:
+      temperature: "{{ (states('input_number.t') | float * 9 / 5) + 32 }}"
+    action: climate.set_temperature
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ states('input_number.p') | int == 0 }}"
+        sequence:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.living_room_ac
+            data:
+              hvac_mode: cool
+      - conditions:
+          - condition: template
+            value_template: "{{ states('input_number.p') | int != 0 }}"
+        sequence:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.living_room_ac
+            data:
+              hvac_mode: "off"
