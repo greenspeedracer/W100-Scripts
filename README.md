@@ -11,6 +11,8 @@ In the context of what may be hardcoded into these very crappy scripts, the IEEE
 
 I have not seen any issue with reusing the IEEE address above. It was the IEEE of the Aqara hub I did testing with. Using that IEEE to send commands from my SLZB worked just fine. YMMV.
 
+"u16_onoff: %llu, u16_mode:%llu, u16_temp:%llu, u16_wind_speed:%llu, u16_wind_mode:%llu"
+
 P: Power  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P=0 (Thermostat On)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P=1 (Thermostat Off)  
@@ -25,7 +27,7 @@ S: Speed (Fan Speed)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S=1 (Fan Low)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S=2 (Fan Medium)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S=3 (Fan High)  
-D: Unknown. Values below have been observed with no obvious changes in behvior. Will eventually see if I can figure this out, but it doesn't seem to be breaking.  
+D: "Wind Mode" I assume this is something like swing mode. I saw no change when I messed with that setting the Aqara app, but there isn't an indicator for this on the W100 anyway so it doesn't affect much.   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D=0  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D=1  
 
